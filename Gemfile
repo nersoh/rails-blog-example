@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'devise'
+gem 'haml-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -43,6 +45,7 @@ group :development, :test do
   gem 'spring'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 
 group :test do
