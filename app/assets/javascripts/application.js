@@ -11,6 +11,17 @@
 // about supported directives.
 //
 //= require jquery
+//= require bootstrap-sprockets
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+disabledButton = function() {
+	$("input[type=submit").click(function() {
+		$(this).addClass("disabled");
+		console.log("click");
+	});
+};
+
+$(document).ready(disabledButton);
+$(document).on('ready page:load', disabledButton);
+

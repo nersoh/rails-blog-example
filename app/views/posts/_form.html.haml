@@ -1,0 +1,17 @@
+- if @post.errors.any?
+	#error-explanation
+		.alert.alert-danger
+			= "This form contains " << pluralize(@post.errors.count, "error")
+			%ul
+				- @post.errors.full_messages.each do |message|
+					%li= message
+
+= form_for(@post, html: {class: 'form-default'}) do |f|
+	= f.label :title
+	= f.text_field :title, class: 'form-control'
+	= f.label :content
+	= f.text_area :content, class: 'form-control'
+	= f.label :published, class: 'checkbox inline' do
+		= f.check_box :published
+		%span Published?
+	= f.submit submit_text, class: "btn btn-primary"

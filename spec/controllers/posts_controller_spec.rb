@@ -45,6 +45,13 @@ RSpec.describe PostsController, type: :controller do
 	  		expect(response).to redirect_to(Post.last)
 	  	end
 	  end
+
+	  context "invalid attributes" do
+	  	it "shows post errors" do
+	  		post :create, post: FactoryGirl.attributes_for(:post, title: nil, content: nil)
+	  		expect(assigns(:post).errors.full_messages).not_to eq([])
+	  	end
+	  end
 	end
 
 	describe "PUT update" do
@@ -72,6 +79,14 @@ RSpec.describe PostsController, type: :controller do
 					title: nil)
 				expect(response).to render_template(:edit)
 			end
+		end
+	end
+	describe "DELETE post" do
+		it "destroys a post" do
+			post = FactoryGirl.create(:post)
+			expect {
+				delete :destroy, id: post
+			}.to change(Post, :count).by(-1)
 		end
 	end
 end

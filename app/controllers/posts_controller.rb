@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-	before_action :set_post, only: [:show, :edit, :update, :delete]
+	before_action :set_post, only: [:show, :edit, :update, :destroy]
 
 	def index
 		@posts = Post.where(published: true)
@@ -10,6 +10,7 @@ class PostsController < ApplicationController
 	end
 
 	def new
+		@post = Post.new
 	end
 
 	def edit
@@ -30,6 +31,11 @@ class PostsController < ApplicationController
 		else
 			render 'edit'
 		end
+	end
+
+	def destroy
+		@post.destroy
+		redirect_to posts_url
 	end
 
 	private

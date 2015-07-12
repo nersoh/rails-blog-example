@@ -1,0 +1,15 @@
+body {
+	background-color: black;
+}
+
+.form-default{
+	input, textarea, button {
+		margin-bottom: 20px;
+	}
+	.inline {
+		margin-left: 20px;
+	}
+	.disabled {
+		cursor: not-allowed;
+	}
+}
