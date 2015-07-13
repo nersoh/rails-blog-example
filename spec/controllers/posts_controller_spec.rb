@@ -29,27 +29,40 @@ RSpec.describe PostsController, type: :controller do
 	end
 
 	describe "POST create" do
-	  context "valid attributes" do
-	  	it "get new post page" do
+	  context "admin not logged in" do
+
+	  	it "redirects to login page" do
 	  		get :new
-	  		expect(response).to render_template(:new)
+	  		expect(response.body).to redirect_to("/login")
 	  	end
-	  	it "creates a new post" do
+	  	it "cannot create a new post" do
 	  		expect {
 	  			post :create, post: FactoryGirl.attributes_for(:post)
-	  		}.to change(Post, :count).by(1)
-	  	end
-
-	  	it "redirects to post page" do
-				post :create, post: FactoryGirl.attributes_for(:post)
-	  		expect(response).to redirect_to(Post.last)
+	  		}.not_to change(Post, :count)
 	  	end
 	  end
 
-	  context "invalid attributes" do
-	  	it "shows post errors" do
-	  		post :create, post: FactoryGirl.attributes_for(:post, title: nil, content: nil)
-	  		expect(assigns(:post).errors.full_messages).not_to eq([])
+	  context "admin logged in" do
+	  	before :each do
+		  	admin = FactoryGirl.create(:admin)
+		  	sign_in admin
+	  	end
+
+	  	it "redirects to login page" do
+	  		get :new
+	  		expect(response).to render_template(:new)
+	  	end
+
+	  	it "creates a new post" do
+	  		expect { 
+	  			post :create, post: FactoryGirl.attributes_for(:post)
+	  		 }.to change(Post, :count).by(1)
+	  	end
+
+	  	it "does not create a new post with invalid attributes" do
+	  		expect { 
+	  			post :create, post: FactoryGirl.attributes_for(:post, title: nil, content: nil)
+	  		 }.not_to change(Post, :count)
 	  	end
 	  end
 	end
@@ -58,35 +71,60 @@ RSpec.describe PostsController, type: :controller do
 		before :each do
 			@post = FactoryGirl.create(:post)
 		end
-		context "valid information" do
-		  it "changes post's title" do
+		context "admin not logged in" do
+		  it "cannot change posts" do
 		  	title = "title2"
 		  	put :update, id: @post, post: FactoryGirl.attributes_for(:post, title: title)
 		  	@post.reload
-		  	expect(@post.title).to eq(title)
+		  	expect(@post.title).not_to eq(title)
 		  end
 
-		  it "updates a post" do
+		  it "goes to login page when trying to update" do
 		  	put :update, id: @post, post: FactoryGirl.attributes_for(:post, 
 		  			title: "t1", content: "content", published: true)
-		  	expect(response).to redirect_to(@post)
+		  	expect(response).to redirect_to(new_admin_session_path)
 		  end
 		end
 
-		context "invalid information" do
-			it "goes back to edit page" do
+		context "admin logged in" do
+			before :each do
+		  	admin = FactoryGirl.create(:admin)
+		  	sign_in admin
+	  	end
+			
+			it "renders edit page" do
 				put :update, id: @post, post: FactoryGirl.attributes_for(:post,
 					title: nil)
 				expect(response).to render_template(:edit)
 			end
+
+			it "changes post title" do
+				title = "new title"
+				put :update, id: @post, post: FactoryGirl.attributes_for(:post, title: title)
+				@post.reload
+				expect(@post.title).to eq(title)
+			end
 		end
 	end
 	describe "DELETE post" do
-		it "destroys a post" do
-			post = FactoryGirl.create(:post)
-			expect {
-				delete :destroy, id: post
-			}.to change(Post, :count).by(-1)
+		before :each do
+			@post = FactoryGirl.create(:post)
+		end
+
+		context "admin logged in" do
+			before :each do
+				admin = FactoryGirl.create(:admin)
+				sign_in admin
+			end
+			it "destroys a post" do
+				expect { delete :destroy, id: @post }.to change(Post, :count).by(-1)
+			end
+		end
+
+		context "admin not logged in" do
+			it "is not able to delete posts" do
+				expect { delete :destroy, id: @post }.not_to change(Post, :count)
+			end	
 		end
 	end
 end

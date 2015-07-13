@@ -7,7 +7,9 @@
 			%small= time_ago_in_words post.created_at
 		%p= post.content
 		%ul{class: 'list-inline'}
-			%li= link_to "edit", edit_post_path(post)
-			%li= link_to "delete", post, method: :delete, data: {confirm: "Sure?"}
+			- if policy(post).update?
+				%li= link_to "edit", edit_post_path(post)
+			- if policy(post).destroy?
+				%li= link_to "delete", post, method: :delete, data: {confirm: "Sure?"}
 
 = link_to "Create new post", new_post_path, class: 'btn btn-primary'

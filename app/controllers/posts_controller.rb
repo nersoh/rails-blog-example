@@ -1,8 +1,11 @@
 class PostsController < ApplicationController
+	after_action :verify_authorized, except: [:index, :show]
+	before_action :authenticate_admin!, except: [:index, :show]
 	before_action :set_post, only: [:show, :edit, :update, :destroy]
 
 	def index
 		@posts = Post.where(published: true)
+		authorize @posts
 	end
 
 	def show
@@ -11,6 +14,7 @@ class PostsController < ApplicationController
 
 	def new
 		@post = Post.new
+		authorize @post
 	end
 
 	def edit
@@ -18,6 +22,7 @@ class PostsController < ApplicationController
 
 	def create
 		@post = Post.new(post_params)
+		authorize @post
 		if @post.save
 			redirect_to @post
 		else
@@ -46,5 +51,6 @@ class PostsController < ApplicationController
 
 	def set_post
 		@post = Post.find(params[:id])
+		authorize @post
 	end
 end
