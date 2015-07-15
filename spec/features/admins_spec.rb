@@ -5,11 +5,13 @@ RSpec.feature "Admin", type: :feature do
   scenario 'should be able to log in' do
     log_in admin
     expect(page).to have_content("Log out")
+    expect(page).to have_css("li", text: "Dashboard")
   end
   scenario "should be able to log out" do
   	log_in admin
   	click_link "Log out"
-  	expect(page).to have_text "Log in"
+  	expect(page).not_to have_text "Log out"
+    expect(page).not_to have_css(".navbar-admin")
   end
 
   scenario "Creates a new post" do

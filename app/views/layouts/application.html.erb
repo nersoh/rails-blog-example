@@ -8,7 +8,11 @@
 </head>
 <body>
 
-<%= render 'layouts/header' %>
+<% if admin_signed_in? %>
+	<%= render 'admin/layouts/header' %>
+<% else %>
+	<%= render 'layouts/header' %>
+<% end %>
 <div class="container">
 	<%= yield %>
 </div>

@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 	  current_admin
 	end
 
+  def after_sign_in_path_for(resource)
+    admin_dashboard_path
+  end
+
   private
 
   def user_not_authorized

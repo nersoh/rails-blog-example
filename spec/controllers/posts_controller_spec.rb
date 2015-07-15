@@ -33,7 +33,7 @@ RSpec.describe PostsController, type: :controller do
 
 	  	it "redirects to login page" do
 	  		get :new
-	  		expect(response.body).to redirect_to("/login")
+	  		expect(response).to redirect_to("/login")
 	  	end
 	  	it "cannot create a new post" do
 	  		expect {

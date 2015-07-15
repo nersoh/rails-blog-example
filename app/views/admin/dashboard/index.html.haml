@@ -1,0 +1,20 @@
+.page.header
+	%h1 
+		Dashboard
+		%small Posts
+%table{class: "table table-striped"}
+	%thead
+		%th Title
+		%th Published?
+		%th Created At
+	%tbody
+	- @posts.each do |post|
+		%tr
+			%td= post.title
+			%td= post.published
+			%td= post.created_at
+			%td
+				= link_to "edit", edit_post_path(post)
+				\|
+				= link_to "remove", post, method: :delete, data: {confirm: "Are you sure?"}
+			
