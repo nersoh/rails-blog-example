@@ -3,5 +3,6 @@ FactoryGirl.define do
     title { Faker::Lorem.sentence }
 		content { Faker::Lorem.sentence(10)}
 		published true
+		admin
   end
 end
