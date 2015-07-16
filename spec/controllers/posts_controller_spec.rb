@@ -5,7 +5,7 @@ RSpec.describe PostsController, type: :controller do
 		it "assigns @posts" do
 			post = FactoryGirl.create(:post)
 		  get :index
-		  expect(assigns(:posts)).to eq([post])
+		  expect(assigns(:posts)).to include(post)
 		end
 
 		it "rendes Index template" do
@@ -30,7 +30,6 @@ RSpec.describe PostsController, type: :controller do
 
 	describe "POST create" do
 	  context "admin not logged in" do
-
 	  	it "redirects to login page" do
 	  		get :new
 	  		expect(response).to redirect_to("/login")

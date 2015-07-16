@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   namespace :admin do
     get "dashboard", to: 'dashboard#index', as: "dashboard"
+    get "drafts", to: 'dashboard#drafts', as: "drafts"
   end
 
   devise_for :admins, skip: [:sessions]
-  root to: "posts#index"
+  root to: "pages#home"
   resources :posts
 
   as :admin do

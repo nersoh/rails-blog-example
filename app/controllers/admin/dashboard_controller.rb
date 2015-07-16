@@ -3,4 +3,8 @@ class Admin::DashboardController < ApplicationController
   def index
   	@posts = Post.all
   end
+
+  def drafts
+  	@posts = Post.where(published: false)
+  end
 end

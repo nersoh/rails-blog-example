@@ -16,7 +16,7 @@ RSpec.feature "Admin", type: :feature do
 
   scenario "Creates a new post" do
     log_in admin
-    visit "posts/new"
+    visit "/posts/new"
     post_title = Faker::Lorem.sentence
     post_content = Faker::Lorem.paragraph
     fill_in "post_title", with: post_title

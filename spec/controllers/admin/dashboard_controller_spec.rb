@@ -22,4 +22,17 @@ RSpec.describe Admin::DashboardController, type: :controller do
   	end
   end
 
+  describe "GET drafts" do
+    before :each do
+      admin = FactoryGirl.create(:admin)
+      sign_in admin
+    end
+    it "access drafts page" do
+      post = FactoryGirl.create(:post, published: false)
+      get :drafts
+      expect(response).to have_http_status(:success)
+      expect(assigns(:posts)).to include(post)
+    end
+  end
+
 end
