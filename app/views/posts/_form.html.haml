@@ -10,7 +10,7 @@
 	= f.label :title
 	= f.text_field :title, class: 'form-control'
 	= f.label :content
-	= f.text_area :content, class: 'form-control'
+	= f.cktext_area :content, class: 'form-control'
 	= f.label :published, class: 'checkbox inline' do
 		= f.check_box :published
 		%span Published?
