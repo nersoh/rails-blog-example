@@ -5,4 +5,4 @@
 		%h2
 			= link_to post.title, post
 			%small= time_ago_in_words post.created_at
-		%p= post.content
+		%p= sanitize post.content

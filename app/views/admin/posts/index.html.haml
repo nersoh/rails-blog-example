@@ -1,0 +1,11 @@
+.page-header
+	%h1 Posts
+- @posts.each do |post|
+	.post{class: "post-#{post.published ? 'published' : 'unpublished' }"}
+		%h2
+			= link_to post.title, post
+			%small= time_ago_in_words post.created_at
+		%p= sanitize post.content
+		%ul{class: 'list-inline'}
+			%li= link_to "edit", edit_admin_post_path(post)
+			%li= link_to "delete", post, method: :delete, data: {confirm: "Sure?"}

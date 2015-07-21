@@ -3,26 +3,30 @@
 		Dashboard
 		%small Posts
 - if @posts.any?
-	%table{class: "table table-striped"}
-		%thead
-			%th Title
-			%th Published?
-			%th Created At
-		%tbody
-		- @posts.each do |post|
-			%tr
-				%td= post.title
-				%td= post.published ? "Yes" : "No"
-				%td= post.created_at
-				%td
-					= link_to "edit", edit_post_path(post)
-					\|
-					= link_to "remove", post, method: :delete, data: {confirm: "Are you sure?"}
+	= form_tag unpublish_admin_posts_path, method: :put do
+		= submit_tag "Save all as draft", class: 'btn btn-default btn-sm'
+		%table{class: "table table-striped"}
+			%thead
+				%th
+				%th Title
+				%th Published?
+				%th Created At
+			%tbody
+			- @posts.each do |post|
+				%tr
+					%td= check_box_tag "post_ids[]", post.id
+					%td= post.title
+					%td= post.published ? "Yes" : "No"
+					%td= post.created_at
+					%td
+						= link_to "edit", edit_admin_post_path(post)
+						\|
+						= link_to "remove", post, method: :delete, data: {confirm: "Are you sure?"}
 
-	= link_to "Create post", new_post_path, class: "btn btn-primary"
+		= link_to "Create post", new_admin_post_path, class: "btn btn-primary"
 
 - else
 	.jumbotron
 		%p No records found
-		= link_to "New post", new_post_path
+		= link_to "New post", new_admin_post_path
 			

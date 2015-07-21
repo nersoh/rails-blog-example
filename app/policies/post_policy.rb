@@ -28,6 +28,14 @@ class PostPolicy < ApplicationPolicy
 		create?
 	end
 
+	def publish?
+		update?
+	end
+
+	def unpublish?
+		publish?
+	end
+
   class Scope < Scope
     def resolve
       scope

@@ -11,7 +11,7 @@ RSpec.describe PagesController, type: :controller do
 	  	get :home
 	  	expect(assigns(:posts)).to include(post)
 	  end
-	  it "does show unpublished posts" do
+	  it "only shows published posts" do
 	  	post = FactoryGirl.create(:post, published: false)
 	  	get :home
 	  	expect(assigns(:posts)).not_to include(post)

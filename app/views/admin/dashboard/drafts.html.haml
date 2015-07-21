@@ -4,20 +4,25 @@
 		%small posts
 
 - if @posts.any?
-	%table{class: "table table-striped"}
-		%thead
-			%th Title
-			%th Published
-			%th Created at
-		%tbody
+	= form_tag publish_admin_posts_path, method: :put do
+		%table{class: "table table-striped"}
+			%thead
+				%th
+				%th Title
+				%th Published
+				%th Created at
+			%tbody
 			- @posts.each do |post|
-				%td= post.title
-				%td= post.published
-				%td= post.created_at
-				%td
-					= link_to "edit", edit_post_path(post)
-					\|
-					= link_to "remove", post, method: :delete, data: {confirm: "Are you sure?"}
+				%tr
+					%td= check_box_tag "post_ids[]", post.id
+					%td= post.title
+					%td= post.published ? "Yes" : "No"
+					%td= post.created_at
+					%td
+						= link_to "edit", edit_admin_post_path(post)
+						\|
+						= link_to "remove", post, method: :delete, data: {confirm: "Are you sure?"}
+		= submit_tag "Publish All Selected", class: 'btn btn-primary'
 - else
 	.jumbotron
 		%p No records found

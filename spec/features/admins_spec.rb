@@ -16,12 +16,29 @@ RSpec.feature "Admin", type: :feature do
 
   scenario "Creates a new post" do
     log_in admin
-    visit "/posts/new"
+    visit "/admin/posts/new"
     post_title = Faker::Lorem.sentence
     post_content = Faker::Lorem.paragraph
-    fill_in "post_title", with: post_title
-    fill_in "post_content", with: post_content
-    click_button "Create post"
+    create_post(post_title, post_content, true)
     expect(page).to have_content post_title
+  end
+
+  scenario "publishes all draft posts" do
+    log_in admin
+    # Creates some records
+    3.times do
+      visit "/admin/posts/new"
+      create_post(
+        Faker::Lorem.sentence,
+        Faker::Lorem.paragraph,
+        false
+      )
+    end
+    visit admin_drafts_url
+    all("input[type=checkbox]").each do |checkbox|
+      checkbox.set(true)
+    end
+    click_button("Publish All Selected")
+    expect(page).to have_text("No records found")
   end
 end

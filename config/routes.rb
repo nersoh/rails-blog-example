@@ -1,13 +1,22 @@
 Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
+  
   namespace :admin do
     get "dashboard", to: 'dashboard#index', as: "dashboard"
     get "drafts", to: 'dashboard#drafts', as: "drafts"
+    resources :posts do
+      collection do
+        put :publish
+        put :unpublish
+      end
+    end
   end
 
   devise_for :admins, skip: [:sessions]
   root to: "pages#home"
-  resources :posts
+  resources :posts, only: [:index, :show]
+
+
 
   as :admin do
     get "login", to: "devise/sessions#new", as: :new_admin_session

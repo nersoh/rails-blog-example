@@ -2,7 +2,7 @@
 	= link_to "Blog Admin", root_url, class: 'navbar-brand'
 	%ul{class: "nav navbar-nav"}
 		%li= link_to "Dashboard", admin_dashboard_path
-		%li= link_to "Posts", posts_path
+		%li= link_to "Posts", admin_posts_path
 		%li= link_to "Drafts", admin_drafts_path
 		- if admin_signed_in?
 			%li= link_to "Log out", destroy_admin_session_path, method: :delete
